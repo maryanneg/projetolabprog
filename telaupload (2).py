@@ -21,3 +21,5 @@ while True:
                 leitor = csv.reader(arquivo_csv, delimiter=',')
                 for coluna in leitor:
                     print(coluna)
+
+                    
