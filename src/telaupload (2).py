@@ -2,8 +2,9 @@ import PySimpleGUI as sg
 import csv
 sg.theme('Green')
 layout = [  [sg.Text('Tela de Upload', font=('arial',15),justification='center', size=(50, 1))],
-            [sg.Text('Escolha o Arquivo',size=(15,5)), sg.Input('',key='upload'),sg.FileBrowse()],
-            [sg.Button('Enviar'), sg.Button('Cancelar')] ]
+            [sg.Text('Escolha o Arquivo',size=(15,0)), sg.Input('',key='upload'),sg.FileBrowse()],
+            [sg.Button('Enviar'), sg.Button('Cancelar')],
+            [sg.Output(size=(71, 10))]]
 
 
 tela = sg.Window('Tela de Upload', layout)
@@ -15,6 +16,7 @@ while True:
     elif eventos == 'Cancelar':
         break
     if  eventos == 'Enviar':
+
         if valores['upload']:
             print('Envio Concluido', valores['upload'])
             with open(valores['upload']) as arquivo_csv:
