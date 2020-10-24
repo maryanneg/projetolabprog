@@ -1,3 +1,4 @@
+from reportlab.pdfgen import canvas
 import PySimpleGUI as sg
 import csv
 
@@ -12,8 +13,8 @@ def listagem_dados(lista, tamanho):
             print(i,j)
 
     columm_layout = [
-        [sg.Text(str(lista[i]), size=(8, 1), justification='right', key=(i))] +
-        [sg.Input(size=(10, 1), pad=(1, 1), justification='right', key=(i, j)) for j in range(0,2) ]
+        [sg.Text(str(lista[i]), size=(20, 1), key=(i))] +
+        [sg.Input(size=(20, 1), justification='right', key=(i, j)) for j in range(0,2) ]
         for i in range(tamanho)]
 
     return columm_layout
@@ -28,11 +29,27 @@ def tela_upload():
 def tela_dados(columm_layout):
     layout = [
         [sg.Text('Tela de Dados', font=('arial', 15), justification='center', size=(50, 1))],
-        # [sg.Listbox('Aguarde um momento',size=(100,20), key='-OUT-')],
 
-        [sg.Col(columm_layout, size=(800, 600), scrollable=True)],
-        [sg.Button('Gerar'), sg.Button('Cancelar')]]
-    return sg.Window('Dados do Arquivo', layout = layout, finalize= True)
+        [sg.Text('Nome Aluno', font=('arial', 13), size=(23, 1)), sg.Text('Nota 1', font=('arial', 13), size=(17, 1)), sg.Text('Nota 2', font=('arial', 13), size=(20, 1))],
+
+        [sg.Col(columm_layout, scrollable=True, size=(500, 255))],
+        [sg.Button('Gerar'), sg.Button('Cancelar')]  ]
+    return sg.Window('Dados do Arquivo', layout = layout, finalize= True, size=(540, 400))
+
+def gerar_pdf(lista_pdf):
+    y = 0
+    pdf = canvas.Canvas("Boletim.pdf")
+    pdf.setFont('Times-Bold', 25)
+    pdf.drawString(100, 800, "Lista:")
+    pdf.setFont('Times-Bold', 18)
+    for dados_alunos in lista_pdf:
+         for i in range(len(dados_alunos)):
+            print(dados_alunos[i])
+            y = y + 50
+            pdf.drawString(100, 800 - y, dados_alunos[i])
+
+    pdf.save()
+
 
 janela1, janela2 = tela_upload(), None
 lista = []
@@ -78,9 +95,10 @@ while True:
             for j in range(2):
                 dados_alunos.append(valores[i,j])
                 print(valores[i,j])
-            dados_alunos.append(str(int(dados_alunos[1]) + int(dados_alunos[2])))
+            dados_alunos.append(str(
+                ((int(dados_alunos[1]) + int(dados_alunos[2])) / 2))
+            )
             lista_pdf.append(dados_alunos)
 
         print(lista_pdf)
-
-
+        gerar_pdf(lista_pdf)
