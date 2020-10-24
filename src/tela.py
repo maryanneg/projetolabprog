@@ -1,21 +1,29 @@
 import PySimpleGUI as sg
 
+"""
+    Simple Form (a one-shot data entry window)
+    Use this design pattern to show a form one time to a user that is "submitted"
+"""
+MAX_COL = 5
 
-#layout
-sg.theme('green')
-layout = [  [sg.Text('Turma 1', font=('arial',32), justification='center', size=(55, 2))],
-            [sg.Text('alunosalunosalunosalunos'*50, font=('arial',15), justification='center', size=(55, 21))],
-            [sg.Button('Anterior', size=(10, 1)), sg.Button('Próximo', size=(10, 1))]  ]
+columm_layout =  [
+        [sg.Text(str(j), size=(4, 1), justification='right' ) ] +
+        [sg.Input(size=(10, 1), pad=(  1, 1), justification='right', key=("nota" , j)) ]
+        for j in range(MAX_COL)]
 
-#Janela
-tela = sg.Window('Turmas', layout, element_justification='c', keep_on_top=True, size=(900, 650))
+layout = [[sg.Text('Please enter your Name, Address, Phone')],
+          [sg.Col(columm_layout, size=(800, 600), scrollable=True)],
+          [sg.Button('Submit'), sg.Button('Cancel')]]
 
-#Ler os eventos
-while True:
-    eventos, valores = tela.read()
-    if eventos == sg.WINDOW_CLOSED:
-        break
-    #elif eventos == 'Anterior':
-        #ele volta uma tela
-    #elif eventos == 'Próximo':
-        #ele pula uma tela
+window = sg.Window('Simple Data Entry Window', layout)
+event, values = window.read(close=True)
+
+if event == 'Submit':
+    # print('The events was ', event, 'You input', values['-NAME-'], values['-ADDRESS-'], values['-PHONE-'])
+
+    for i in range(5):
+        print(values["nota", i])
+    pass
+else:
+    print('User cancelled')
+
