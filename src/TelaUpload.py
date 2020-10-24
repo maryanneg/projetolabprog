@@ -20,7 +20,7 @@ def listagem_dados(lista, tamanho):
     return columm_layout
 
 def tela_upload():
-    sg.theme('DarkGreen3')
+    sg.theme('LightGrey')
     layout = [  [sg.Text('Tela de Upload', font=('arial',15),justification='center', size=(50, 1))],
             [sg.Text('Escolha o Arquivo',size=(15,1)), sg.Input('',key='upload'),sg.FileBrowse()],
             [sg.Button('Enviar'), sg.Button('Cancelar')] ]
@@ -39,21 +39,37 @@ def tela_dados(columm_layout):
 def gerar_pdf(lista_pdf):
     y = 0
     pdf = canvas.Canvas("Boletim.pdf")
-    pdf.setFont('Times-Bold', 25)
-    pdf.drawString(100, 800, "Lista:")
-    pdf.setFont('Times-Bold', 18)
+    pdf.setFont('Helvetica-Bold', 25)
+    pdf.drawString(180, 800, "Boletim Bimestral")
+    pdf.rect(20, 795, 560, 25, fill=False, stroke=True)
+    pdf.rect(20, 765, 560, 25, fill=False, stroke=True)
+    pdf.rect(20, 5, 560, 900, fill=False, stroke=True)
+    pdf.line(230, 2, 230, 765)
+    pdf.line(330, 2, 330, 765)
+    pdf.line(430, 2, 430, 765)
+    pdf.setFont('Helvetica', 18)
+    pdf.drawString(80, 770, "Alunos")
+    pdf.drawString(250, 770, "Nota 1")
+    pdf.drawString(350, 770, "Nota 2")
+    pdf.drawString(450, 770, "Média")
     for dados_alunos in lista_pdf:
-         for i in range(len(dados_alunos)):
-            print(dados_alunos[i])
-            y = y + 50
-            pdf.drawString(100, 800 - y, dados_alunos[i])
+        print(dados_alunos[i])
+        y = y + 50
+        pdf.drawString(80, 780 - y, dados_alunos[0])
+        pdf.drawString(250, 780 - y, dados_alunos[1])
+        pdf.drawString(350, 780 - y, dados_alunos[2])
+        pdf.drawString(450, 780 - y, dados_alunos[3])
+
 
     pdf.save()
+    sg.popup_ok('Arquivo Concluído')
+
 
 
 janela1, janela2 = tela_upload(), None
 lista = []
 lista_pdf = []
+
 while True:
     janela, eventos, valores = sg.read_all_windows()
 
@@ -102,3 +118,4 @@ while True:
 
         print(lista_pdf)
         gerar_pdf(lista_pdf)
+        janela2.hide()
