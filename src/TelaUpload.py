@@ -4,14 +4,6 @@ import csv
 
 def listagem_dados(lista, tamanho):
 
-
-    for u in range(0, tamanho):
-        print(lista[u])
-
-    for i in range(2):
-        for j in range(2):
-            print(i,j)
-
     columm_layout = [
         [sg.Text(str(lista[i]), size=(20, 1), key=(i))] +
         [sg.Input(size=(20, 1), justification='right', key=(i, j)) for j in range(0,2) ]
@@ -33,12 +25,13 @@ def tela_dados(columm_layout):
         [sg.Text('Nome Aluno', font=('arial', 13), size=(23, 1)), sg.Text('Nota 1', font=('arial', 13), size=(17, 1)), sg.Text('Nota 2', font=('arial', 13), size=(20, 1))],
 
         [sg.Col(columm_layout, scrollable=True, size=(500, 255))],
-        [sg.Button('Gerar'), sg.Button('Cancelar')]  ]
+        [sg.Input(visible=False, enable_events=True, key='arquivo'), sg.FileSaveAs(target='arquivo' ,file_types=(('PDF','.pdf'),)), sg.Button('Cancelar')]  ]
     return sg.Window('Dados do Arquivo', layout = layout, finalize= True, size=(540, 400))
 
-def gerar_pdf(lista_pdf):
+def gerar_pdf(lista_pdf,caminho):
     y = 0
-    pdf = canvas.Canvas("Boletim.pdf")
+    pdf = canvas.Canvas(caminho + '.pdf')
+    print(caminho + '.pdf')
     pdf.setFont('Helvetica-Bold', 25)
     pdf.drawString(180, 800, "Boletim Bimestral")
     pdf.rect(20, 795, 560, 25, fill=False, stroke=True)
@@ -53,7 +46,7 @@ def gerar_pdf(lista_pdf):
     pdf.drawString(350, 770, "Nota 2")
     pdf.drawString(450, 770, "Média")
     for dados_alunos in lista_pdf:
-        print(dados_alunos[i])
+
         y = y + 50
         pdf.drawString(80, 780 - y, dados_alunos[0])
         pdf.drawString(250, 780 - y, dados_alunos[1])
@@ -102,7 +95,8 @@ while True:
 
     if janela == janela2 and eventos == sg.WINDOW_CLOSED or eventos == 'Cancelar':
         break
-    if janela == janela2  and eventos == 'Gerar':
+    if janela == janela2  and valores['arquivo']!= None :
+
 
         # PEGA DADOS DA TELA E OS COLOCA NUM ARRAY PARA LISTAGEM DO PDF
         for i in range(len(lista)):
@@ -110,12 +104,11 @@ while True:
             dados_alunos.append(lista[i])
             for j in range(2):
                 dados_alunos.append(valores[i,j])
-                print(valores[i,j])
+
             dados_alunos.append(str(
                 ((int(dados_alunos[1]) + int(dados_alunos[2])) / 2))
             )
             lista_pdf.append(dados_alunos)
 
-        print(lista_pdf)
-        gerar_pdf(lista_pdf)
+        gerar_pdf(lista_pdf,valores['arquivo'])
         janela2.hide()
