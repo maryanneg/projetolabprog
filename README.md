@@ -1,10 +1,10 @@
-# projetolabprog
---Configuração
+# Projeto 2 VA
+### Configuração
 
-no desenvolvimento foi utilizado Python 3.8
+No desenvolvimento foi utilizado Python 3.8
 
-tenha o pip na versão recente
-para rodar o projeto é preciso instalar o reportlab.pdfgen e pysimplegui
+Tenha o pip na versão recente.
+Para rodar o projeto é preciso instalar o reportlab.pdfgen e pysimplegui.
 
-pip install reportlab
-pip install pysimplegui
+* pip install reportlab
+* pip install pysimplegui
