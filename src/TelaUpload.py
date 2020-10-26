@@ -112,3 +112,5 @@ while True:
 
         gerar_pdf(lista_pdf,valores['arquivo'])
         janela2.hide()
+        janela2.close()
+        break
